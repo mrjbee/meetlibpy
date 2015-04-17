@@ -11,7 +11,7 @@ def define(signature_builder):
 
 def execute(context, args_map, log):
         assert isinstance(context, command.ExecutionContext)
-        if 0 != os.system('reboot now'):
+        if 0 != os.system('shutdown /r /t 0 /f'):
             context.message("Reboot fails", "Something goes wrong reboot fails")
         else:
             context.message("Rebooting...", "Going to reboot computer, now")
