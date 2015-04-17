@@ -1,3 +1,5 @@
+import re
+import shutil
 from common import command
 import os
 
@@ -6,28 +8,24 @@ def define(signature_builder):
     assert isinstance(signature_builder, command.SignatureBuilder)
     signature_builder\
         .title("Delete Download")\
-        .about("Allow to delete downloaded file by specifying pattern which be a part of rm command. IMPORTANT! Its not allowed to include sign '//' and '..' as it might lead to unexpected behaviour ;)")\
-        .args().text_arg(True, "pattern", "Rm like file pattern. IMPORTANT! Its not allowed to include sign '/' and '..' as it might lead to unexpected behaviour ;)")
+        .about("Allow to delete downloaded file by specifying pattern.")\
+        .args().text_arg(True, "pattern", "Specify pattern for matching file")
 
 
 def execute(context, args_map, log):
     assert isinstance(context, command.ExecutionContext)
     download_folder = "/opt/downloads"
-    if "|" in args_map["pattern"]:
-        context.message("Pattern error", "'&' cheating not allowed")
-        return
-    if "&" in args_map["pattern"]:
-        context.message("Pattern error", "'&' cheating not allowed")
-        return
-    if ".." in args_map["pattern"]:
-        context.message("Pattern error", "'..' is not allowed")
-        return
-    if "/" in args_map["pattern"]:
-        context.message("Pattern error", "'/' is not allowed")
-        return
-    file_to_remove = download_folder+"/"+args_map["pattern"]
-    if 0 != os.system("rm -rf "+file_to_remove):
-        context.message("Fail to execute", "rm -rf "+file_to_remove)
-    else:
-        context.message("Executed", "rm -rf "+file_to_remove)
+    purge(download_folder, args_map["pattern"], context)
 
+
+def purge(dir, pattern, context):
+    assert isinstance(context, command.ExecutionContext)
+    for f in os.listdir(dir):
+        if re.search(pattern, f):
+            file_to_remove = os.path.join(dir, f)
+            if os.path.isfile(file_to_remove):
+                os.remove(file_to_remove)
+                context.message("File removed", file_to_remove)
+            else:
+                shutil.rmtree(file_to_remove)
+                context.message("Folder removed", file_to_remove)
