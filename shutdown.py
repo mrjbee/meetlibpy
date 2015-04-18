@@ -27,7 +27,7 @@ def execute(context, args_map, log):
 
 
 def do_shutdown(time, context):
-    if 0 != os.system('shutdown '+time):
+    if 0 != os.system('shutdown -h '+time):
         context.stop("Something goes wrong shutdown fails")
         return False
     else:
