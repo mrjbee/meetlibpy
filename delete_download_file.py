@@ -24,24 +24,22 @@ def define(signature_builder):
 def execute(context, args_map, log):
     assert isinstance(context, command.ExecutionContext)
     download_folder = "/opt/downloads"
-    if args_map["dry_run"]:
-        context.message("'Dry Run' mode", "Activated")
-    purge(download_folder, args_map["pattern"], args_map["dry_run"], context)
+    purge(download_folder, args_map["remove_file"], context)
 
 
-def purge(dir, pattern, do_dry, context):
+def purge(dir, file_name, context):
     assert isinstance(context, command.ExecutionContext)
-    for f in os.listdir(dir):
-        if re.search(pattern, f):
-            file_to_remove = os.path.join(dir, f)
-            if os.path.isfile(file_to_remove):
-                if not do_dry:
-                    os.remove(file_to_remove)
-                context.message("File removed", file_to_remove)
-            else:
-                if not do_dry:
-                    shutil.rmtree(file_to_remove)
-                context.message("Folder removed", file_to_remove)
+    file_to_remove = os.path.join(dir, file_name)
+    if not os.path.exists(file_to_remove):
+        context.message("File not found", file_name)
+        return
+
+    if os.path.isfile(file_to_remove):
+        os.remove(file_to_remove)
+        context.message("File removed", file_name)
+    else:
+        shutil.rmtree(file_to_remove)
+        context.message("Folder removed", file_name)
 
 
 def bytes2human(n):

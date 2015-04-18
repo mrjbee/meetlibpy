@@ -27,14 +27,15 @@ def execute(context, args_map, log):
 
 def purge(dir, pattern, do_dry, context):
     assert isinstance(context, command.ExecutionContext)
+    msg_list = context.message_list("Deleted list")
     for f in os.listdir(dir):
         if re.search(pattern, f):
             file_to_remove = os.path.join(dir, f)
             if os.path.isfile(file_to_remove):
                 if not do_dry:
                     os.remove(file_to_remove)
-                context.message("File removed", file_to_remove)
+                msg_list.add(f, "File")
             else:
                 if not do_dry:
                     shutil.rmtree(file_to_remove)
-                context.message("Folder removed", file_to_remove)
+                msg_list.add(f, "Folder")
