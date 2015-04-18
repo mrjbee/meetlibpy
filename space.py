@@ -6,6 +6,7 @@ def define(signature_builder):
     assert isinstance(signature_builder, command.SignatureBuilder)
     signature_builder\
         .title("Disk Space Checker")\
+        .action("Show Space")\
         .about("Check free and used space of your download folder")
 
 

@@ -5,9 +5,9 @@ import os
 def define(signature_builder):
         assert isinstance(signature_builder, command.SignatureBuilder)
         signature_builder\
+            .action("Reboot Now")\
             .title("Reboot")\
-            .about("Reboot computer.")
-
+            .about("Reboot computer")
 
 def execute(context, args_map, log):
         assert isinstance(context, command.ExecutionContext)
