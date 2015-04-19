@@ -110,7 +110,15 @@ class Option:
             self._file_name = caption+"."+self._type
         self._link = link
 
-        if qualityString.__contains__("1280x720"):
+        if qualityString.__contains__("hd"):
+            self._quality_description = "HD"
+            self._quality_choice = 1
+            self._quality = 3
+        elif qualityString.__contains__("sd"):
+            self._quality_description = "SD"
+            self._quality_choice = 1
+            self._quality = 2
+        elif qualityString.__contains__("1280x720"):
             self._quality_description = "1280x720"
             self._quality_choice = 1
             self._quality = 3
