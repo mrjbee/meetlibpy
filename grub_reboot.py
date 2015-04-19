@@ -5,7 +5,8 @@ import os
 def define(signature_builder):
         assert isinstance(signature_builder, command.SignatureBuilder)
         signature_builder\
-            .title("To Windows")\
+            .title("Boot In Windows")\
+            .action("To Windows")\
             .about("Reboot computer your computer to a Windows OS")
 
 
