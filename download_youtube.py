@@ -75,8 +75,10 @@ class DownloadTask (command.Task):
         assert isinstance(context, command.TaskExecutionContext)
         option = self._option
         assert isinstance(option, Option)
-        file_to_download = os.path.join(context.property("youtube_download"), option._caption+".part."+option._type).encode('utf-8')
-        file_to_save = os.path.join(context.property("youtube_download"), option._caption+"."+option._type).encode('utf-8')
+        folder = context.property("youtube_download")
+        os.makedirs(folder)
+        file_to_download = os.path.join(folder, option._caption+".part."+option._type).encode('utf-8')
+        file_to_save = os.path.join(folder, option._caption+"."+option._type).encode('utf-8')
         urllib.urlretrieve(option._link, file_to_download, reporthook=self.dlProgress)
         os.rename(file_to_download, file_to_save)
 
