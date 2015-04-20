@@ -5,6 +5,7 @@ echo "$DIR"
 cd $DIR
 file_name=commands.list
 git fetch
+git reset --hard origin/library
 while read command
 do
     echo "== Merging last version of '$command'"
