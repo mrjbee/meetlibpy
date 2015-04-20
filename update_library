@@ -1,5 +1,5 @@
 echo "== Move to library folder"
-echo "(pwd)"
+echo $(pwd)
 file_name=commands.list
 /opt/bin/git fetch
 /opt/bin/git reset --hard origin/library_ddwrt
