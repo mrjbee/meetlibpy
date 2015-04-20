@@ -1,7 +1,5 @@
-DIR="."
 echo "== Move to library folder"
-echo "$DIR"
-cd $DIR
+evho "(pwd)"
 file_name=commands.list
 /opt/bin/git fetch
 /opt/bin/git reset --hard origin/library
