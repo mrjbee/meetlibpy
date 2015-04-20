@@ -1,16 +1,15 @@
-#!/bin/bash
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+DIR="."
 echo "== Move to library folder"
 echo "$DIR"
 cd $DIR
 file_name=commands.list
-git fetch
-git reset --hard origin/library
+/opt/bin/git fetch
+/opt/bin/git reset --hard origin/library
 rm -rf *.pyc
 while read command
 do
     echo "== Merging last version of '$command'"
-    git merge -m "Merge command $command" origin/commands/$command
+    /opt/bin/git merge -m "Merge command $command" origin/commands/$command
 done < $file_name
 
 echo ""
