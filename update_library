@@ -1,0 +1,16 @@
+#!/bin/bash
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+echo "== Move to library folder"
+echo "$DIR"
+cd $DIR
+file_name=commands.list
+git fetch
+while read command
+do
+    echo "== Merging last version of '$command'"
+    git merge -m "Merge command $command" origin/commands/$command
+done < $file_name
+
+echo ""
+echo "== Commands package:"
+ls -l
