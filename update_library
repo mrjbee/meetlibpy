@@ -2,7 +2,7 @@ echo "== Move to library folder"
 evho "(pwd)"
 file_name=commands.list
 /opt/bin/git fetch
-/opt/bin/git reset --hard origin/library
+/opt/bin/git reset --hard origin/library_ddwrt
 rm -rf *.pyc
 while read command
 do
