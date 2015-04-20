@@ -6,6 +6,7 @@ cd $DIR
 file_name=commands.list
 git fetch
 git reset --hard origin/library
+rm -rf *.pyc
 while read command
 do
     echo "== Merging last version of '$command'"
