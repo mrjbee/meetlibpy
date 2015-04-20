@@ -31,7 +31,7 @@ def execute(context, args_map, log):
     data = response.read()
 
     # HOTFIX (unicode issue): no idea why decode here help
-    # data = data.decode('utf-8')
+    data = data.decode('utf-8')
     parser = GetVideoParser()
     parser.feed(data)
 
@@ -76,7 +76,8 @@ class DownloadTask (command.Task):
         option = self._option
         assert isinstance(option, Option)
         folder = context.property("youtube_download")
-        os.makedirs(folder)
+        if not os.path.exists(folder):
+            os.makedirs(folder)
         file_to_download = os.path.join(folder, option._caption+".part."+option._type).encode('utf-8')
         file_to_save = os.path.join(folder, option._caption+"."+option._type).encode('utf-8')
         urllib.urlretrieve(option._link, file_to_download, reporthook=self.dlProgress)
@@ -188,7 +189,6 @@ class GetVideoParser(HTMLParser):
 
     def handle_data(self, data):
         if self._isCaptionData:
-            # HOTFIX (unicode issue): no idea why encode here help
-            self._caption = data.strip().decode('utf-8')
+            self._caption = data.strip()
             self._isCaptionTag = False
             self._isCaptionData = False
