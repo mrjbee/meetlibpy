@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from __future__ import division
-import httplib, urllib, sys, os
-from HTMLParser import HTMLParser
+
+import http.client, urllib.request, urllib.parse, urllib.error, sys, os
+from html.parser import HTMLParser
 from time import sleep
 from common import command
 
@@ -25,7 +25,7 @@ def execute(context, args_map, log):
     requested_type = None
     requested_url = args_map["url"]
 
-    conn = httplib.HTTPSConnection("savedeo.com")
+    conn = http.client.HTTPSConnection("savedeo.com")
     conn.request("GET", "/download?url=" + requested_url)
     response = conn.getresponse()
     data = response.read()
@@ -80,7 +80,7 @@ class DownloadTask (command.Task):
             os.makedirs(folder)
         file_to_download = os.path.join(folder, option._caption+".part."+option._type).encode('utf-8')
         file_to_save = os.path.join(folder, option._caption+"."+option._type).encode('utf-8')
-        urllib.urlretrieve(option._link, file_to_download, reporthook=self.dlProgress)
+        urllib.request.urlretrieve(option._link, file_to_download, reporthook=self.dlProgress)
         os.rename(file_to_download, file_to_save)
 
     def dlProgress(self, count, blockSize, totalSize):
