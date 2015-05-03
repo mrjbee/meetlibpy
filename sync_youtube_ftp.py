@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from __future__ import division
-import httplib, urllib, sys, os, ftplib
-from HTMLParser import HTMLParser
+
+import http.client, urllib.request, urllib.parse, urllib.error, sys, os, ftplib
+from html.parser import HTMLParser
 from time import sleep
 from common import command
 
