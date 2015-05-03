@@ -24,6 +24,7 @@ def define(signature_builder):
         return
 
     folder_chooser.choice("New folder", "Create new and move there",  "new_folder")
+    folder_chooser.choice("TRASH", "Move here to remove",  "trash_it")
 
     for it_file in os.listdir(download_folder):
         if os.path.isfile(os.path.join(download_folder, it_file)):
@@ -53,7 +54,12 @@ def execute(context, args_map, log):
         folder_to_save = os.path.join(download_folder, folder_to_save)
 
     file_to_move = args_map["file"]
-    os.rename(
-        os.path.join(download_folder, file_to_move),
-        os.path.join(folder_to_save, file_to_move))
-    context.message("File moved", file_to_move)
+    if args_map["folder"] == "trash_it":
+        os.remove(
+            os.path.join(download_folder, file_to_move))
+        context.message("File removed", file_to_move)
+    else:
+        os.rename(
+            os.path.join(download_folder, file_to_move),
+            os.path.join(folder_to_save, file_to_move))
+        context.message("File moved", file_to_move)
