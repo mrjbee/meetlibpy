@@ -1,1 +1,3 @@
 *.pyc
+commands.list
+__pycache__
