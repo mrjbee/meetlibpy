@@ -34,4 +34,26 @@ def define(signature_builder):
 
 
 def execute(context, args_map, log):
-    pass
+    assert isinstance(context, command.ExecutionContext)
+    if args_map["folder"] == "no_support":
+        context.stop("Not supported")
+        return
+
+    download_folder = context.property("youtube_download")
+    folder_to_save = args_map["folder"]
+    if folder_to_save == "new_folder":
+        new_folder = args_map.get("new_folder", None)
+        if new_folder is None or new_folder == '':
+            context.stop("Folder not defined")
+        else:
+            folder_to_save = os.path.join(download_folder, new_folder)
+            os.makedirs(folder_to_save)
+            context.message("New folder created", new_folder)
+    else:
+        folder_to_save = os.path.join(download_folder, folder_to_save)
+
+    file_to_move = args_map["file"]
+    os.rename(
+        os.path.join(download_folder, file_to_move),
+        os.path.join(folder_to_save, file_to_move))
+    context.message("File moved", file_to_move)
