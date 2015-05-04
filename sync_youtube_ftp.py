@@ -25,15 +25,15 @@ def execute(context, args_map, log):
             files_to_sync.append(file)
 
     for sync_file in files_to_sync:
-        context.sub_task(SynchronizationTask(sync_file,os.path.join(download_folder,sync_file)))
+        context.sub_task(SynchronizationTask(sync_file, os.path.join(download_folder, sync_file)))
 
 
 class SynchronizationTask (command.Task):
 
     def __init__(self, file_name, file_path):
         super(SynchronizationTask, self).__init__()
-        self._file_name = file_name.encode("utf-8")
-        self._file_path = file_path.encode("utf-8")
+        self._file_path = file_path
+        self._file_name = file_name
 
     def title(self):
         return "Synchronizing ["+self._file_name+"]"
@@ -49,11 +49,13 @@ class SynchronizationTask (command.Task):
             data = []
             ftp.dir(data.append)
             for remote_file_details in data:
+                remote_file = bytes(remote_file_details, "ISO-8859-1").decode("UTF-8")
                 if self._file_name in remote_file_details:
                     os.remove(self._file_path)
                     return
-            ftp.storbinary("STOR " + self._file_name+".ftp", open(self._file_path, "rb"), 1024)
-            ftp.rename(self._file_name+".ftp", self._file_name)
+            ftp_file_name = self._file_name.encode().decode("ISO-8859-1")
+            ftp.storbinary("STOR " + ftp_file_name+".ftp", open(self._file_path, "rb"), 1024)
+            ftp.rename(ftp_file_name+".ftp", ftp_file_name)
             ftp.quit()
             ftp = None
             os.remove(self._file_path)
